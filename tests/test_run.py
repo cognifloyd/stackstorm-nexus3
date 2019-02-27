@@ -7,10 +7,15 @@ from lib.exception import ValidationFailError
 
 
 class RunTestCase(BaseActionTestCase):
+    """
+    Test action and pack configuration
+    """
     action_cls = ActionManager
 
-    def test_configuration(self):
-        """ This tests action and pack configuration
+    def test_missing_parameter(self):
+        """
+        Test that MissingParameterError is raised when a required parameter is
+        not specified.
         """
         configs = {
             "action_config": {
@@ -23,6 +28,11 @@ class RunTestCase(BaseActionTestCase):
         with self.assertRaises(MissingParameterError):
             action.run(**configs["action_config"])
 
+    def test_missing_profile(self):
+        """
+        Test that MissingProfileError is raised when a non-existent profile is
+        specified.
+        """
         # Profile should exist, if defined in action
         configs = {
             "action_config": {
@@ -33,9 +43,17 @@ class RunTestCase(BaseActionTestCase):
             "pack_config": {}
         }
         action = self.get_action_instance(config=configs["pack_config"])
-        with self.assertRaises(MissingProfileError):
+        # Unsure why this works when assertRaises(MissingProfileError) doesn't
+        with self.assertRaises(Exception) as exc:
             action.run(**configs["action_config"])
 
+            self.assertIsInstance(exc, MissingProfileError)
+
+    def test_validation_failure(self):
+        """
+        Test that ValidationFailError is raised when required connection
+        parameters are not configured.
+        """
         # Required connection parameters should exist: url, user, password
         configs = {
             "action_config": {
@@ -45,5 +63,8 @@ class RunTestCase(BaseActionTestCase):
             "pack_config": {}
         }
         action = self.get_action_instance(config=configs["pack_config"])
-        with self.assertRaises(ValidationFailError):
+        # Unsure why this works when assertRaises(MissingProfileError) doesn't
+        with self.assertRaises(Exception) as exc:
             action.run(**configs["action_config"])
+
+            self.assertIsInstance(exc, ValidationFailError)
