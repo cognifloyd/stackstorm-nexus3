@@ -22,6 +22,7 @@ class ResourceRepositoriesTest(NexusBaseTestCase):
         mock_client.repositories.raw_list.return_value = repo_list_fixture
 
         action = self.get_action_instance(pack_config)
+        action._client = mock_client
         (is_success, response) = action.run(**action_config)
 
         mock_client.repositories.raw_list.assert_called_once()
@@ -44,6 +45,7 @@ class ResourceRepositoriesTest(NexusBaseTestCase):
             side_effect=mock_get_raw_by_name)
 
         action = self.get_action_instance(pack_config)
+        action._client = mock_client
         (is_success, response) = action.run(**action_config)
 
         mock_client.repositories.get_raw_by_name.assert_called_once()
@@ -63,6 +65,7 @@ class ResourceRepositoriesTest(NexusBaseTestCase):
         mock_client.repositories.create = mock.Mock(side_effect=mock_create)
 
         action = self.get_action_instance(pack_config)
+        action._client = mock_client
         (is_success, response) = action.run(**action_config)
 
         mock_client.repositories.create.assert_called_once()
@@ -82,6 +85,7 @@ class ResourceRepositoriesTest(NexusBaseTestCase):
         mock_client.repositories.delete = mock.Mock(side_effect=mock_delete)
 
         action = self.get_action_instance(pack_config)
+        action._client = mock_client
         (is_success, response) = action.run(**action_config)
 
         mock_client.repositories.delete.assert_called_once()

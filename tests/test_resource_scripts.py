@@ -20,6 +20,7 @@ class ResourceScriptsTest(NexusBaseTestCase):
         mock_client.scripts.list.return_value = script_list_fixture
 
         action = self.get_action_instance(pack_config)
+        action._client = mock_client
         (is_success, response) = action.run(**action_config)
 
         mock_client.scripts.list.assert_called_once()
@@ -40,6 +41,7 @@ class ResourceScriptsTest(NexusBaseTestCase):
         mock_client.scripts.get = mock.Mock(side_effect=mock_get)
 
         action = self.get_action_instance(pack_config)
+        action._client = mock_client
         (is_success, response) = action.run(**action_config)
 
         mock_client.scripts.get.assert_called_once()
@@ -60,6 +62,7 @@ class ResourceScriptsTest(NexusBaseTestCase):
             side_effect=mock_create_if_missing)
 
         action = self.get_action_instance(pack_config)
+        action._client = mock_client
         (is_success, response) = action.run(**action_config)
 
         mock_client.scripts.create_if_missing.assert_called_once()
@@ -79,6 +82,7 @@ class ResourceScriptsTest(NexusBaseTestCase):
         mock_client.scripts.delete = mock.Mock(side_effect=mock_delete)
 
         action = self.get_action_instance(pack_config)
+        action._client = mock_client
         (is_success, response) = action.run(**action_config)
 
         mock_client.scripts.delete.assert_called_once()
