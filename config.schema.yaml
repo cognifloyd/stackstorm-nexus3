@@ -23,7 +23,7 @@ password:
   required: false
   position: 3
 profiles:
-  description: "Nexus3 Connection profile name. This will use above options as"
+  description: "Nexus3 Connection profile name. This will use above options as default values."
   type: object
   required: false
   properties: {}
@@ -31,6 +31,7 @@ profiles:
     type: object
     additionalProperties: false
     properties:
+      # TODO: Refactor to use YAML anchors and references
       url:
         description: "URL of the JIRA instance (e.g. ``https://myproject.atlassian.net``)"
         type: "string"
