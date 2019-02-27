@@ -1,0 +1,5 @@
+{
+    "content": "import groovy.json.JsonSlurper...xxx",
+    "type": "groovy",
+    "name": "nexus3-cli-repository-create"
+  }
