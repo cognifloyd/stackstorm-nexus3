@@ -1,0 +1,12 @@
+[
+    {
+        "content": "xxxx",
+        "type": "groovy",
+        "name": "nexus3-cli-repository-delete"
+    },
+    {
+        "content": "import groovy.json.JsonSlurper...xxxx",
+        "type": "groovy",
+        "name": "nexus3-cli-repository-create"
+    }
+]
