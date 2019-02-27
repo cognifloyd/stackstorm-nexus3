@@ -1,19 +1,106 @@
-# StackStorm Exchange Incubator
+# Stackstorm-Nexus3
 
-### What is this?
+[Sontatype nexus3](https://www.sonatype.com/nexus-repository-oss) stackstorm pack
 
-This repository is a very special place where user-submitted packs get reviewed, perfected, approved, and finally transferred to the Exchange.
+## Installation
 
-If you want to submit your pack, it's simple! **Fork this repo, create a subdirectory with your pack, and open a Pull Request.** We'll take it from here. Even if your pack is work-in-progress, you can still submit it to get advice and early feedback from our engineers! Or ping us [on Slack](https://stackstorm.com/community-signup), which is generally the best place to get advice from the StackStorm Community.
+Install this pack with: `st2 pack install file://$PWD`
 
-Before you submit a pack, make sure to read the [Create and Contribute a Pack](https://docs.stackstorm.com/reference/packs.html) section of our documentation.
+Or if in remote repository: `st2 pack install https://github.com/MY/PACK`
 
-Here's N.E.P.T.R. the StackStorm Exchange Governor, giving you a thumbs-up:
+## Configuration
 
-![](http://i.imgur.com/3bqVAh0.gif)
+Copy the example configuration in [nexus3.yaml.example](./nexus3.yaml.example)
+to `/opt/stackstorm/configs/nexus3.yaml` and edit as required.
 
-## Contributors License Agreement
+add nexus3 server connection profile:
 
-By contributing you agree that these contributions are your own (or approved by your employer) and
-you grant a full, complete, irrevocable copyright license to all users and developers of the
-project, present and future, pursuant to the license of the project.
+* ``url`` - URL of the nexus3 server (e.g. ``http://localhost:8081``)
+* ``user`` - username
+* ``password`` - Password
+* ``verify`` - https tls verify, only used if the `url` option specifies an `https` connection
+
+You can also add multiple profiles:
+
+When you add multiple profile, above parameters becomes defaults for any key missing in the profile.
+
+``` yaml
+---
+url: "http://localhost:8081"
+user: "admin"
+password: "admin123"
+verify: True
+default_profile: "dev"  # use this to make for missing config_profile parameter when calling any action
+profiles:
+  "dev":
+    url: "http://localhost:8081"
+    user: "dev-user"
+    password: "mypas"
+    verify: True
+   "dev-2":
+     user: "dev2-user"
+     password: "mypass2"
+     # url : fallback to url: "http://localhost:8081"
+     # verify: fallback to verify: True
+```
+
+**Note** : When modifying the configuration in `/opt/stackstorm/configs/` please
+           remember to tell StackStorm to load these new values by running
+           `st2ctl reload --register-configs`
+
+## Actions
+
+While naming actions following convention is used:
+
+    < VERB >_< RESOURCE(plural) >
+    eg.
+    list_repositories
+    get_scripts
+
+Supported Resources
+
+* Repositories
+* Scripts
+
+### Available actions
+
+* **list_repositories** : List nexus3 repositories
+* **get_repositories** : get nexus3 repositories
+* **create_repositories** : create nexus3 repository
+* **delete_repositories** : delete nexus3 repository
+
+* **list_scripts** : List nexus3 scripts
+* **get_scripts** : get nexus3 scripts
+* **create_scripts** : create(& upload) if missing, groovy script
+* **delete_scripts** : delete nexus3 script
+
+## Policies
+
+* **http.retry** : Retry core.http action on timeout.
+
+## Aliases
+
+--NIL--
+
+## Rules
+
+--NIL--
+
+## Sensors
+
+--NIL--
+
+## Testing
+
+While testing you can leverage [Makefile](./tests/Makefile) to ease writing and testing actions. Read the Makefile for the list of useful commands.
+
+## Contributing
+
+Before submitting make sure python linter is happy with your changes first
+
+``` bash
+pip install flake8
+
+#executing flake8 ./
+make -f tests/Makefile lint
+```
