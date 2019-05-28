@@ -1,2 +1,2 @@
 eventlet
-nexus3-cli
+nexus3-cli==1.0.1
